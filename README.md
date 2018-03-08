@@ -1,5 +1,9 @@
 # CircStats
 
+[![Build Status](https://travis-ci.org/anowacki/CircStats.jl.svg?branch=master)](https://travis-ci.org/anowacki/CircStats.jl)
+[![Build status](https://ci.appveyor.com/api/projects/status/ikal62afnbwl4q9d?svg=true)](https://ci.appveyor.com/project/AndyNowacki/circstats-jl)
+[![Coverage Status](https://coveralls.io/repos/github/anowacki/CircStats.jl/badge.svg?branch=master)](https://coveralls.io/github/anowacki/CircStats.jl?branch=master)
+
 [Julia](https://julialang.org) functions for the statistical analysis of
 circular data.
 
