@@ -92,7 +92,7 @@ function watson_U2n(θ, cdf::Function, α=0.05, degrees=false; axial=false)
     V = cdf.(θ) - cdf(0)
     V̄ = sum(V)/n
     U² = sum(V.^2) - sum((2*(1:n) - 1).*V/n) + n*(1/3 - (V̄ - 1/2)^2)
-    U²crit = watson_U2_crit(n, α)
+    U²crit = watson_U2n_crit(n, α)
     U² > U²crit, U², U²crit
 end
 
@@ -101,44 +101,44 @@ function watson_U2n(θ, α::Number=0.05, degrees=false; kwargs...)
     watson_U2n(θ, x->von_mises_cdf(x, μ, κ, degrees), α, degrees; kwargs...)
 end
 
-"Table of critical values of Watson's U² test"
-const WATSON_U2_TABLE = [0.143 0.000 0.161 0.164 0.165
-                         0.145 0.173 0.194 0.213 0.224
-                         0.146 0.176 0.202 0.233 0.252
-                         0.148 0.177 0.205 0.238 0.262
-                         0.149 0.179 0.208 0.243 0.269
-                         0.149 0.180 0.210 0.247 0.274
-                         0.150 0.181 0.211 0.250 0.278
-                         0.150 0.182 0.212 0.252 0.281
-                         0.150 0.182 0.213 0.254 0.283
-                         0.150 0.183 0.215 0.256 0.287
-                         0.151 0.184 0.216 0.258 0.290
-                         0.151 0.184 0.216 0.259 0.291
-                         0.151 0.184 0.217 0.259 0.292
-                         0.151 0.185 0.217 0.261 0.293
-                         0.152 0.185 0.219 0.263 0.296
-                         0.152 0.186 0.219 0.264 0.298
-                         0.152 0.186 0.220 0.265 0.299
-                         0.152 0.186 0.221 0.266 0.301
-                         0.152 0.187 0.221 0.267 0.302]
-"Values of α (columns) for WATSON_U2_TABLE"
-const WATSON_U2_ALPHAS = (0.100, 0.050, 0.025, 0.010, 0.005)
-"Values of n (rows) for WATSON_U2_table"
-const WATSON_U2_N = (2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 30, 40, 50, 100, 200)
+"Table of critical values of Watson's U²n test.  Table 35 of Kanji (2006)."
+const WATSON_U2N_TABLE = [0.143 0.000 0.161 0.164 0.165
+                          0.145 0.173 0.194 0.213 0.224
+                          0.146 0.176 0.202 0.233 0.252
+                          0.148 0.177 0.205 0.238 0.262
+                          0.149 0.179 0.208 0.243 0.269
+                          0.149 0.180 0.210 0.247 0.274
+                          0.150 0.181 0.211 0.250 0.278
+                          0.150 0.182 0.212 0.252 0.281
+                          0.150 0.182 0.213 0.254 0.283
+                          0.150 0.183 0.215 0.256 0.287
+                          0.151 0.184 0.216 0.258 0.290
+                          0.151 0.184 0.216 0.259 0.291
+                          0.151 0.184 0.217 0.259 0.292
+                          0.151 0.185 0.217 0.261 0.293
+                          0.152 0.185 0.219 0.263 0.296
+                          0.152 0.186 0.219 0.264 0.298
+                          0.152 0.186 0.220 0.265 0.299
+                          0.152 0.186 0.221 0.266 0.301
+                          0.152 0.187 0.221 0.267 0.302]
+"Values of α (columns) for WATSON_U2N_TABLE"
+const WATSON_U2N_ALPHAS = (0.100, 0.050, 0.025, 0.010, 0.005)
+"Values of n (rows) for WATSON_U2N_table"
+const WATSON_U2N_N = (2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 30, 40, 50, 100, 200)
 
 """
-    watson_U2_crit(n, α) -> U²crit
+    watson_U2n_crit(n, α) -> U²crit
 
 Return the critical value at the α level for a sample of `n` angles.
 """
-function watson_U2_crit(n, α)
+function watson_U2n_crit(n, α)
     2 <= n || throw(ArgumentError("`n` (supplied $n) must be 2 or more"))
-    any(isapprox.(α, WATSON_U2_ALPHAS, atol=0.0001)) == 1 ||
+    any(isapprox.(α, WATSON_U2N_ALPHAS, atol=0.0001)) == 1 ||
         throw(ArgumentError("Significance level for Watson's U² test must " *
                             "be one of $(WATSON_U2_ALPHAS); asked for $α"))
-    indn = indmin(abs.(n .- WATSON_U2_N))
-    indα = indmin(abs.(α .- WATSON_U2_ALPHAS))
-    WATSON_U2_TABLE[indn,indα]
+    indn = indmin(abs.(n .- WATSON_U2N_N))
+    indα = indmin(abs.(α .- WATSON_U2N_ALPHAS))
+    WATSON_U2N_TABLE[indn,indα]
 end
 
 """
