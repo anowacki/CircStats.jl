@@ -19,6 +19,6 @@ with calls to methods elsewhere (as in the case of `von_mises_cdf`).
 
 ## Install
 
-```bash
-git clone https://github.com/anowacki/CircStats.jl
+```julia
+julia> Pkg.clone("https://github.com/anowacki/CircStats.jl")
 ```
