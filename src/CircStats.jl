@@ -12,15 +12,20 @@ module CircStats
 import Distributions
 
 export
+    # Summary stats
     cdist,
     cmean,
     cmedian,
     cresultant,
     cstd,
     cvariance,
-    fit_vonMises,
+    # Distributions
     von_mises_cdf,
     von_mises_pdf,
+    # Fitting/estimation
+    fit_vonMises,
+    # Hypothesis testing
+    V_test,
     watson_U2n
 
 include("Datasets.jl")

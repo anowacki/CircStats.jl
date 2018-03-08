@@ -13,6 +13,12 @@ using Base.Test
     end
     
     # V-test (modified Rayleigh) to test if a distribution has a preferred direction
-    let θ = []
+    # Test 95 of Kanji (2006)
+    let θ = [250, 275, 285, 285, 290, 290, 295, 300, 305, 310, 315, 320, 330, 330, 5],
+            θ₀ = 265, α = 0.01, V = 3.884, Vcrit = 2.302, is_not_random = true
+        is_not_random′, V′, Vcrit′ = V_test(θ, θ₀, α, true)
+        @test is_not_random′ == is_not_random
+        @test V′ ≈ V atol=0.1
+        @test Vcrit′ ≈ Vcrit atol=0.01
     end
 end
