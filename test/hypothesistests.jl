@@ -21,4 +21,31 @@ using Base.Test
         @test V′ ≈ V atol=0.1
         @test Vcrit′ ≈ Vcrit atol=0.01
     end
+    
+    # Watson's U² test for the difference of two samples
+    # Data and values from worked example from
+    #    http://webspace.ship.edu/pgmarr/Geo441/Examples/Watsons%20U2%20Test.pdf
+    let θ = [38,45,46,52,53,54,56,57,60,64],
+            ϕ = [36,40,44,45,51,51,52,54,54,55,55,56,67,78,89,314], α = 0.05,
+            reject = false, U² = 0.0427, U²crit = 0.1856
+        reject′, U²′, U²crit′ = watson_U2(θ, ϕ, α, true)
+        @test reject′ == reject
+        @test U²′ ≈ U² atol=0.0001
+        @test U²crit′ ≈ U²crit atol=0.02
+    end
+    
+    # Data of Example 8.2 of Mardia and Jupp (2000); test values of Example 8.4
+    # Currently fails because Mardia and Jupp inexplicably use the value of
+    # U²crit for n = m = ∞, and their application of expression (8.3.8) does not
+    # seem to give the same answer as as my application of (8.3.7).
+    # let θ = [50, 290, 300, 300, 305, 320, 330, 330, 335, 340, 340, 355],
+    #         ϕ = [70, 155, 190, 195, 215, 235, 235, 240, 255, 260, 290, 300, 300, 300],
+    #         α = 0.01, U² = 0.320, U²crit = 0.268, reject = true
+    #     reject′, U²′, U²crit′ = watson_U2(θ, ϕ, α, true)
+    #     @test reject′ == reject
+    #     println(U²′)
+    #     @test U²′ ≈ U² atol=0.001
+    #     println(U²crit′)
+    #     @test U²crit′ ≈ U²crit atol=0.001
+    # end
 end

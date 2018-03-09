@@ -26,6 +26,7 @@ export
     fit_vonMises,
     # Hypothesis testing
     V_test,
+    watson_U2,
     watson_U2n
 
 include("Datasets.jl")
