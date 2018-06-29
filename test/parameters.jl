@@ -11,6 +11,7 @@ using Base.Test
     @test cdist(2.1, 2.0) ≈ -0.1
     @test cdist(340.1, 0.1, true) ≈ 20.0
     let (a, b) = rand(2)
+        @test cdist(a, b, false) == cdist(a, b)
         @test cdist(a, b) ≈ deg2rad(cdist(rad2deg(a), rad2deg(b), true))
         @test cdist(a, b, true) ≈ rad2deg(cdist(deg2rad(a), deg2rad(b)))
     end

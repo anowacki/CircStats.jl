@@ -46,7 +46,8 @@ Angles are confined to be the smaller possible angle, so are in the range
 Angles are in radians, unless `degrees` == true.
 """
 cdist(a, b) = mod(b - a + pi, 2π) - pi
-cdist(a, b, degrees::Bool) = rad2deg(cdist(deg2rad(a), deg2rad(b)))
+cdist(a, b, degrees::Bool) =
+    degrees ? rad2deg(cdist(deg2rad(a), deg2rad(b))) : cdist(a, b)
 
 """
     cmean(a::Array, degrees::Bool=false) -> mean
