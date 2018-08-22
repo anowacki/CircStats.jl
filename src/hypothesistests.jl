@@ -53,9 +53,9 @@ const V_TEST_TABLE = [1.3051 1.6524 2.2505 2.4459 2.7938 3.0825
                       1.2818 1.6449 2.3256 2.5747 3.0877 3.7140
                       1.2817 1.6449 2.3260 2.5752 3.0890 3.7165]
 "Values of α (columns) for V_TEST_TABLE"
-const V_TEST_ALPHAS = (0.1000, 0.0500, 0.0100, 0.0050, 0.0010, 0.0001)
+const V_TEST_ALPHAS = [0.1000, 0.0500, 0.0100, 0.0050, 0.0010, 0.0001]
 "Values of n (rows) for V_TEST_TABLE"
-const V_TEST_NS = (5:30..., 40, 50, 60, 70, 100, 500, 1000)
+const V_TEST_NS = [5:30..., 40, 50, 60, 70, 100, 500, 1000]
 
 """
     V_critical_value(n, α) -> Vcrit
@@ -65,8 +65,8 @@ Return the critical value for the V test `Vcrit` for a sample size of `n` at the
 """
 function V_critical_value(n, α)
     n >= V_TEST_NS[1] || throw(ArgumentError("V test tables only valid for `n >= 5` (have $n)"))
-    indn = indmin(abs.(n .- V_TEST_NS))
-    indα = indmin(abs.(α .- V_TEST_ALPHAS))
+    indn = argmin(abs.(n .- V_TEST_NS))
+    indα = argmin(abs.(α .- V_TEST_ALPHAS))
     V_TEST_TABLE[indn,indα]
 end
 
@@ -89,9 +89,9 @@ function watson_U2n(θ, cdf::Function, α=0.05, degrees=false; axial=false)
     degrees && (θ = deg2rad.(θ))
     θ = sort(mod.(θ, 2π))
     n = length(θ)
-    V = cdf.(θ) - cdf(0)
+    V = cdf.(θ) .- cdf(0)
     V̄ = sum(V)/n
-    U² = sum(V.^2) - sum((2*(1:n) - 1).*V/n) + n*(1/3 - (V̄ - 1/2)^2)
+    U² = sum(V.^2) - sum((2*(1:n) .- 1).*V./n) + n*(1/3 - (V̄ - 1/2)^2)
     U²crit = watson_U2n_crit(n, α)
     U² > U²crit, U², U²crit
 end
@@ -122,9 +122,9 @@ const WATSON_U2N_TABLE = [0.143 0.000 0.161 0.164 0.165
                           0.152 0.186 0.221 0.266 0.301
                           0.152 0.187 0.221 0.267 0.302]
 "Values of α (columns) for WATSON_U2N_TABLE"
-const WATSON_U2N_ALPHAS = (0.100, 0.050, 0.025, 0.010, 0.005)
+const WATSON_U2N_ALPHAS = [0.100, 0.050, 0.025, 0.010, 0.005]
 "Values of n (rows) for WATSON_U2N_table"
-const WATSON_U2N_N = (2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 30, 40, 50, 100, 200)
+const WATSON_U2N_N = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 30, 40, 50, 100, 200]
 
 """
     watson_U2n_crit(n, α) -> U²crit
@@ -136,8 +136,8 @@ function watson_U2n_crit(n, α)
     any(isapprox.(α, WATSON_U2N_ALPHAS, atol=0.0001)) == 1 ||
         throw(ArgumentError("Significance level for Watson's U²n test must " *
                             "be one of $(WATSON_U2N_ALPHAS); asked for $α"))
-    indn = indmin(abs.(n .- WATSON_U2N_N))
-    indα = indmin(abs.(α .- WATSON_U2N_ALPHAS))
+    indn = argmin(abs.(n .- WATSON_U2N_N))
+    indα = argmin(abs.(α .- WATSON_U2N_ALPHAS))
     WATSON_U2N_TABLE[indn,indα]
 end
 
@@ -193,9 +193,9 @@ function watson_U2(θ, ϕ, α=0.05, degrees=false)
 end
 
 "Values of the larger sample size for WATSON_U2_TABLE"
-const WATSON_U2_TABLE_NS = (10, 12, 14, 16, 20, 25, 30, 40, 50, 100)
+const WATSON_U2_TABLE_NS = [10, 12, 14, 16, 20, 25, 30, 40, 50, 100]
 "Values of α for WATSON_U2_TABLE"
-const WATSON_U2_TABLE_ALPHAS = (0.1, 0.05, 0.01, 0.001)
+const WATSON_U2_TABLE_ALPHAS = [0.1, 0.05, 0.01, 0.001]
 function make_Watson_U2_table()
     t = Dict{Int, Dict{Int,NTuple{length(WATSON_U2_TABLE_ALPHAS),Float64}}}()
     for n1 in WATSON_U2_TABLE_NS
@@ -278,12 +278,12 @@ const WATSON_U2_TABLE = make_Watson_U2_table()
 function watson_U2_crit(n, m, α)
     n1 = max(n, m)
     n2 = min(n, m)
-    n1ind = indmin(abs.(n1 .- WATSON_U2_TABLE_NS))
+    n1ind = argmin(abs.(n1 .- WATSON_U2_TABLE_NS))
     n1 = WATSON_U2_TABLE_NS[n1ind]
     any(isapprox.(α, WATSON_U2_TABLE_ALPHAS, atol=0.0001)) ||
         throw(ArgumentError("Significance level for Watson's U² test must " *
                             "be one of $(WATSON_U2_TABLE_ALPHAS); asked for $α"))
-    αind = indmin(abs.(α .- WATSON_U2_TABLE_ALPHAS))
+    αind = argmin(abs.(α .- WATSON_U2_TABLE_ALPHAS))
     t = WATSON_U2_TABLE[n1]
     for k in sort(collect(keys(t)))
         n2 <= k && return t[k][αind]

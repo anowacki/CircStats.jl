@@ -9,6 +9,9 @@ By default, all input and output from routines is in radians, but in general pas
 """
 module CircStats
 
+using Compat
+using Compat.Printf
+
 import Distributions
 
 export
@@ -56,7 +59,7 @@ Return the mean angle from the set of angles in `a`.
 
 Angles are in radians, unless `degrees` == true.
 """
-cmean(a) = atan2(sum(sin.(a)), sum(cos.(a)))
+cmean(a) = atan(sum(sin.(a)), sum(cos.(a)))
 cmean(a, degrees::Bool) = degrees ? rad2deg(cmean(deg2rad.(a))) : cmean(a)
 
 """
@@ -73,7 +76,7 @@ function cmedian(a, degrees::Bool=false, axial::Bool=false)
     degrees && (A .= deg2rad.(A))
     axial && (A .= 2A)
     # Compute trial bisectors, which are either the points themselves or adjacent means
-    p = Array{Float64}(n)
+    p = Array{Float64}(undef, n)
     if iseven(n)
         for i = 1:n
             j = (i + 1 <= n) ? i + 1 : 1
@@ -135,7 +138,7 @@ Return the standard deviation, `σ`, for a set of angles `a`.
 
 Angles are in radians, unless `degrees == true`.
 """
-cstd(a, degrees::Bool=false) = sqrt(-2.*log(cresultant(a, degrees)))
+cstd(a, degrees::Bool=false) = sqrt(-2*log(cresultant(a, degrees)))
 
 """
     cvariance(a, degrees=false) -> σ²
@@ -147,9 +150,9 @@ Angles are in radians, unless `degrees == true`.
 function cvariance(a, degrees::Bool=false)
     a_mean = cmean(a, degrees)
     if degrees
-        1. - sum(cos.(deg2rad.(a - a_mean)))/length(a)
+        1 - sum(cos.(deg2rad.(a .- a_mean)))/length(a)
     else
-        1. - sum(cos.(a - a_mean))/length(a)
+        1 - sum(cos.(a .- a_mean))/length(a)
     end
 end
 
@@ -202,7 +205,7 @@ Uses the polynomial approximation given by Best and Fisher (1981).
 **N.B.** This may not be reliable when R̄ is small (e.g., < 0.7).
 """
 function estimate_kappa_vonMises(θ, μ)
-    R̄ = mean(cos.(θ - μ))
+    R̄ = mean(cos.(θ .- μ))
     if 0 <= R̄ < 0.53
         2R̄ + R̄^3 + 5R̄^5/6
     elseif 0.53 <= R̄ < 0.85
