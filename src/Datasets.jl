@@ -1,5 +1,3 @@
-__precompile__()
-
 """
 CircStats.Datasets includes a number of example circular statistical datasets.
 """

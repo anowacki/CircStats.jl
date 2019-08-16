@@ -1,5 +1,3 @@
-__precompile__()
-
 """
 module CircStats contains routines for investigating the statistic of circular
 data.
@@ -9,8 +7,7 @@ By default, all input and output from routines is in radians, but in general pas
 """
 module CircStats
 
-using Compat
-using Compat.Printf
+using Printf
 
 import Distributions
 
