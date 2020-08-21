@@ -162,8 +162,8 @@ distribution with circular mean `µ` and concentration `κ`.
 Angles are in radians, unless `degrees` == true.
 """
 von_mises_pdf(a, mu::Real, k::Real, degrees::Bool=false) = degrees ?
-                                    exp(k*cos(deg2rad(a - mu)))/(2pi*besseli(0, k)) :
-                                    exp(k*cos(a - mu))/(2pi*besseli(0, k))
+                                    von_mises_pdf(deg2rad(a), deg2rad(mu), k) :
+                                    Distributions.pdf(Distributions.VonMises(mu, k), a)
 
 """
     von_mises_cdf(a, μ, κ, degrees=false) -> cdf
