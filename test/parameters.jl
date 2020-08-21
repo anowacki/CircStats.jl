@@ -1,7 +1,7 @@
 # Parameter estimation
-
+using Test
 using CircStats
-using Compat.Test
+
 
 @testset "Distance" begin
     @test cdist(0, 0) == 0

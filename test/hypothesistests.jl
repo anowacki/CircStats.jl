@@ -1,6 +1,6 @@
 # Significance tests
+using Test
 using CircStats
-using Compat.Test
 
 @testset "Tests" begin
     # Watson's U²n test for goodness-of-fit to a distribution
