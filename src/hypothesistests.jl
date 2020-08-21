@@ -2,7 +2,7 @@
     V_test(θ, θ₀, degrees=false) -> is_significant, V, Vcrit
 
 Perform the modified Rayleigh or V test to determine if a sample of angles
-`θ` differ signficantly from random towards the angle `θ₀` at the `α` level.
+`θ` differ significantly from random towards the angle `θ₀` at the `α` level.
 
 Return `true` if they do differ from random significantly, the test
 statistic `V` and the critical value `Vcrit`.

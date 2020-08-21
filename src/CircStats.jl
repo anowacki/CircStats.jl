@@ -1,5 +1,5 @@
 """
-module CircStats contains routines for investigating the statistic of circular
+`CircStats` contains routines for investigating the statistics of circular
 data.
 
 By default, all input and output from routines is in radians, but in general passing
@@ -170,6 +170,8 @@ von_mises_pdf(a, mu::Real, k::Real, degrees::Bool=false) = degrees ?
 
 Return the von Mises cumulative distribution function at
 `a` for a distribution with mean `μ` and concentration `κ`.
+
+Angles are in radians, unless `degrees` == true.
 """
 function von_mises_cdf(a, μ, κ, degrees=false)
     degrees && (μ = deg2rad(μ))
@@ -182,6 +184,11 @@ end
 
 Return the maximum-likelihood values of the mean `μ` and concentration
 `κ` for the von Mises distribution which fits the set of angles `θ`.
+
+If `axial` is `true`, then the data are assumed to have a π (or 180°)
+ambiguity.
+
+Angles are in radians, unless `degrees` == true.
 """
 function fit_vonMises(θ, degrees=false; axial=false)
     degrees && (θ = deg2rad.(θ))
