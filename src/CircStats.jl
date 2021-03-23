@@ -11,7 +11,7 @@ using Printf
 
 import Distributions
 
-import StatsBase: mean
+using StatsBase: mean
 
 export
     # Summary stats
