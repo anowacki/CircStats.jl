@@ -22,7 +22,7 @@ with calls to methods elsewhere (as in the case of `von_mises_cdf`).
 On Julia v0.7 and above:
 
 ```julia
-julia> import Pkg; Pkg.add("https://github.com/anowacki/CircStats.jl")
+julia> import Pkg; Pkg.add(url="https://github.com/anowacki/CircStats.jl")
 ```
 
 On older versions:
