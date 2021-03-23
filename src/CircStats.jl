@@ -11,6 +11,8 @@ using Printf
 
 import Distributions
 
+import StatsBase: mean
+
 export
     # Summary stats
     cdist,
